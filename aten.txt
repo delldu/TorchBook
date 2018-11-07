@@ -1,0 +1,70 @@
+sudo apt install libfreetype6-dev
+
+conda install scipy
+conda install scikit-image
+
+
+
+/// Here are some recommended ways to create a 2x2 tensor of zeros
+/// with certain properties.  These all *implicitly* make use of
+/// TensorOptions, even if they don't mention the class explicitly:
+///
+///     at::zeros({2,2}, at::kCUDA);
+///     at::zeros({2,2}, at::kLong);
+///     at::zeros({2,2}, at::device(at::kCUDA).dtype(at::kLong()));
+///     at::zeros({2,2}, at::device({at::kCUDA, 1})); // place on device 1
+///     at::zeros({2,2}, at::requires_grad());
+
+ window_ = at::zeros({n_fft}, self.options());
+
+
+auto a = at::rand({3, 4}, at::kCUDA);
+auto b = at::rand({4, 3}, at::kCUDA).transpose(0, 1);
+auto o = a * b
+float max = o.abs().max().item<double>();
+
+
+auto o = at::zeros({3, 4}, at::kCUDA);
+
+
+at::Tensor s = at::zeros({2,3,4}, at::kLong);
+
+
+
+
+at::Tensor input = self;
+if (self.dim() == 1) {
+    input = input.unsqueeze(0);
+}
+
+
+auto input = at::randn({seq_len, batch_size, input_size}, at::kCUDA);
+
+
+test/basic.cpp
+
+CATCH_SECTION("squeeze") {
+    Tensor a = rand({2, 1}, type);
+    Tensor b = squeeze(a);
+    CATCH_REQUIRE(b.dim() == 1);
+    a = rand({1}, type);
+    b = squeeze(a);
+    // TODO 0-dim squeeze
+    CATCH_REQUIRE(a[0].equal(b));
+}
+
+CATCH_SECTION("copy") {
+    Tensor a = zeros({4, 3}, type);
+    Tensor e = rand({4, 3}, type);
+    a.copy_(e);
+    CATCH_REQUIRE(a.equal(e));
+}
+
+CATCH_SECTION("copy (broadcasting)") {
+    Tensor a = zeros({4, 3}, type);
+    Tensor e = rand({3}, type);
+    a.copy_(e);
+    for (int i = 0; i < 4; ++i) {
+        CATCH_REQUIRE(a[i].equal(e));
+    }
+}
