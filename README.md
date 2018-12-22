@@ -1,2 +1,2 @@
-# PyTorchBook
-PyTorch Book
+# PTorchBook
+Torch Book
